@@ -1,0 +1,250 @@
+:root {
+    --primary-color: #d63384;
+    /* Romantic pink */
+    --envelope-color: #f7d794;
+    /* Envelope paper color */
+    --envelope-dark: #cfac5d;
+    --paper-color: #fff;
+    --bg-overlay: rgba(0, 0, 0, 0.6);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    /* Remove blue highlight on iOS */
+}
+
+body,
+html {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Mosaic Grid Background */
+#bg-slider {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: repeat(4, 1fr);
+    gap: 0;
+    /* Seamless grid */
+}
+
+/* Individual Cell */
+.mosaic-cell {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Double Buffer for smooth transitions inside cell */
+.mosaic-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out;
+}
+
+.mosaic-layer.active {
+    opacity: 1;
+    z-index: 1;
+    /* Bring to front */
+}
+
+/* Overlay */
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-overlay);
+    z-index: -1;
+}
+
+/* Main Container */
+.container {
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    perspective: 1000px;
+}
+
+/* Envelope Styling */
+/* Envelope Styling - Even Larger */
+.envelope-wrapper {
+    position: relative;
+    width: 500px;
+    /* Increased from 400px */
+    height: 350px;
+    /* Increased from 270px */
+    cursor: pointer;
+    transition: transform 0.6s ease;
+}
+
+/* Hint Text */
+.click-hint {
+    margin-top: 50px;
+    color: white;
+    font-family: 'Dancing Script', cursive;
+    font-size: 2rem;
+    text-align: center;
+    opacity: 0.8;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(10px);
+    }
+}
+
+.envelope {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+
+.back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--envelope-color);
+    border-radius: 5px;
+}
+
+.front {
+    position: absolute;
+    border-style: solid;
+    width: 0;
+    height: 0;
+    z-index: 10;
+}
+
+/* The bottom pocket of the envelope */
+.pocket {
+    border-width: 0 250px 175px 250px;
+    /* Adjusted for 500px width */
+    border-color: transparent transparent var(--envelope-dark) transparent;
+    bottom: 0;
+    z-index: 3;
+    border-radius: 0 0 5px 5px;
+}
+
+/* The top flap */
+.flap {
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-width: 180px 250px 0 250px;
+    /* Adjusted for 500px width */
+    border-color: var(--envelope-color) transparent transparent transparent;
+    top: 0;
+    transform-origin: top;
+    transition: transform 0.6s 0.2s ease, z-index 0.2s;
+    /* Delay for realism */
+    z-index: 4;
+}
+
+/* Letter Styling */
+.letter {
+    position: absolute;
+    bottom: 0px;
+    width: 90%;
+    left: 5%;
+    height: 95%;
+    /* Taller letter */
+    background: var(--paper-color);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.6s ease, z-index 0.2s;
+    z-index: 2;
+    /* Inside the envelope initially */
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.text-content {
+    font-family: 'Dancing Script', cursive;
+    font-size: 1.5rem;
+    /* Slightly reduced to fit, but container is bigger so it looks big */
+    color: #444;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.signature {
+    margin-top: 25px;
+    font-weight: bold;
+    font-family: 'Pacifico', cursive;
+    font-size: 1.4rem;
+}
+
+/* OPEN STATE ANIMATIONS */
+.envelope-wrapper.open .flap {
+    transform: rotateX(180deg);
+    z-index: 1;
+    /* Moves behind the letter once open */
+    transition-delay: 0s;
+}
+
+.envelope-wrapper.open .letter {
+    transform: translateY(-100px);
+    /* Move up less to show more of it */
+    height: 110%;
+    /* Make letter expand slightly when open if needed, or keep it big */
+    z-index: 11;
+    transition-delay: 0.4s;
+    transform: translateY(-130px);
+}
+
+/* Mobile Tweaks */
+@media (max-width: 550px) {
+    .envelope-wrapper {
+        width: 340px;
+        height: 240px;
+    }
+
+    .pocket {
+        border-width: 0 170px 120px 170px;
+    }
+
+    .flap {
+        border-width: 125px 170px 0 170px;
+    }
+
+    .text-content {
+        font-size: 1.2rem;
+    }
+
+    .signature {
+        font-size: 1.1rem;
+    }
+}

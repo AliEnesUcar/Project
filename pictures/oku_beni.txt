@@ -1,0 +1,9 @@
+Bu klasöre fotoğraflarınızı şu isimlerle yükleyin:
+1.jpeg
+2.jpeg
+3.jpeg
+...
+45.jpeg
+
+DİKKAT: Uzantıların .jpeg (4 harfli) olduğundan emin olun. .jpg (3 harfli) ise çalışmayabilir veya kodda değişiklik gerekebilir.
+Şu an sistem .jpeg olarak ayarlandı.
