@@ -226,7 +226,7 @@ html {
 }
 
 /* Mobile Tweaks */
-@media (max-width: 550px) {
+@media (max-width: 768px) {
 
     /* Mobile Grid adjustment: 3 columns, 5 rows */
     #bg-slider {
